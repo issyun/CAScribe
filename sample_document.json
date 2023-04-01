@@ -1,0 +1,93 @@
+{
+  "title": "text document",
+  "date": "22-22-22",
+  "format": "jeffersonian",
+  "content": [
+    {
+      "type": "turn",
+      "name": "A",
+      "content": [
+        {
+          "type": "text",
+          "text": "Now I shall talk in many different styles"
+        }
+      ]
+    },
+    {
+      "type": "turn",
+      "name": "BRACADABRA",
+      "content": [
+        {
+          "type": "text",
+          "text": "okay"
+        },
+        {
+          "type": "symbol",
+          "text": ":"
+        }
+      ]
+    },
+    {
+      "type": "turn",
+      "name": "A",
+      "content": [
+        {
+          "type": "text",
+          "text": "I can talk"
+        },
+        {
+          "type": "bold",
+          "text": "bold,"
+        },
+        {
+          "type": "text",
+          "text": "and in "
+        },
+        {
+          "type": "italic",
+          "text": "italics,"
+        },
+        {
+          "type": "text",
+          "text": "and I can even"
+        },
+        {
+          "type": "underline",
+          "text": "underline"
+        },
+        {
+          "type": "text",
+          "text": "my text."
+        }
+      ]
+    },
+    {
+      "type": "turn",
+      "name": "none",
+      "content": [
+        {
+          "type": "symbol",
+          "text": "("
+        },
+        {
+          "type": "text",
+          "text": "2.0"
+        },
+        {
+          "type": "symbol",
+          "text": ")"
+        }
+      ]
+    },
+    {
+      "type": "turn",
+      "name": "BRACADABRA",
+      "content": [
+        {
+          "type": "text",
+          "text": "wow"
+        }
+      ]
+    }
+  ]
+}

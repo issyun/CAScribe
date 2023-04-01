@@ -1,0 +1,35 @@
+:root {
+    --name-width: 10rem;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+p {
+    margin: 0;
+}
+
+#content {
+    width: 100%;
+}
+
+.turn {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.line-number {
+    flex: 0 0 2rem;
+}
+
+.speaker-name {
+    flex: 0 0 var(--name-width);
+}
+
+.utterance {
+    flex: 1 1 0;
+}
