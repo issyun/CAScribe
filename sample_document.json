@@ -8,7 +8,7 @@
       "name": "A",
       "content": [
         {
-          "type": "text",
+          "type": "span",
           "text": "Now I shall talk in many different styles"
         }
       ]
@@ -18,7 +18,7 @@
       "name": "BRACADABRA",
       "content": [
         {
-          "type": "text",
+          "type": "span",
           "text": "okay"
         },
         {
@@ -32,32 +32,32 @@
       "name": "A",
       "content": [
         {
-          "type": "text",
-          "text": "I can talk"
+          "type": "span",
+          "text": "I can talk "
         },
         {
-          "type": "bold",
-          "text": "bold,"
+          "type": "strong",
+          "text": "bold, "
         },
         {
-          "type": "text",
+          "type": "span",
           "text": "and in "
         },
         {
-          "type": "italic",
-          "text": "italics,"
+          "type": "i",
+          "text": "italics, "
         },
         {
-          "type": "text",
-          "text": "and I can even"
+          "type": "span",
+          "text": "and I can even "
         },
         {
-          "type": "underline",
+          "type": "u",
           "text": "underline"
         },
         {
-          "type": "text",
-          "text": "my text."
+          "type": "span",
+          "text": " my text."
         }
       ]
     },
@@ -70,7 +70,7 @@
           "text": "("
         },
         {
-          "type": "text",
+          "type": "span",
           "text": "2.0"
         },
         {
@@ -84,7 +84,7 @@
       "name": "BRACADABRA",
       "content": [
         {
-          "type": "text",
+          "type": "span",
           "text": "wow"
         }
       ]
