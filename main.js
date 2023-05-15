@@ -1,5 +1,6 @@
-let documentData;
+import { v4 as uuidv4 } from 'uuid';
 
+let documentData;
 async function fetchJson() {
   const res = await fetch('./sample_document.json');
   const json = await res.json();
@@ -12,13 +13,19 @@ function renderContent(data) {
     const lineNumber = document.createElement('p');
     lineNumber.className = 'line-number';
     lineNumber.innerText = idx + 1;
+
     const speakerName = document.createElement('p');
-    speakerName.className = 'speaker-name';
+    speakerName.className = 'speaker-name block';
+    speakerName.setAttribute('data-block-id', uuidv4());
     if (turn.name !== 'none') {
       speakerName.innerText = turn.name;
     }
+
     const utterance = document.createElement('div');
-    utterance.className = 'utterance';
+    utterance.className = 'utterance block';
+    utterance.contentEditable = true;
+    utterance.setAttribute('data-block-id', uuidv4());
+
     turn.content.map((element) => {
       let type;
       if (element.type === 'symbol') {
@@ -31,16 +38,21 @@ function renderContent(data) {
       utterance.appendChild(node);
     });
 
-    const div = document.createElement('div');
-    div.className = 'turn';
-    div.appendChild(lineNumber);
-    div.appendChild(speakerName);
-    div.appendChild(utterance);
-    documentField.appendChild(div);
+    const lineData = document.createElement('div');
+    lineData.className = 'line-data';
+    lineData.appendChild(lineNumber);
+    lineData.appendChild(speakerName);
+    contentFieldLeft.appendChild(lineData);
+
+    const lineContent = document.createElement('div');
+    lineContent.className = 'line-content';
+    lineContent.appendChild(utterance);
+    contentFieldRight.appendChild(lineContent);
   });
 }
 
-const documentField = document.getElementById('content');
+const contentFieldLeft = document.getElementById('content-left');
+const contentFieldRight = document.getElementById('content-right');
 const wrapper = document.getElementById('wrapper');
 wrapper.addEventListener('click', handleClick);
 wrapper.addEventListener('keydown', handleKeyDown);
@@ -52,9 +64,19 @@ function handleClick(e) {
   const range = selObj.getRangeAt(0);
   console.log(selObj);
   console.log(range);
+  console.log(recurFindParent(selObj.anchorNode))
   return;
 }
 
 function handleKeyDown(e) {
   return;
+}
+
+function recurFindParent(node) {
+  const parent = node.parentElement;
+  if (parent.classList.contains("block")) {
+    return parent;
+  } else {
+    return recurFindParent(parent)
+  }
 }

@@ -11,11 +11,24 @@ p {
     margin: 0;
 }
 
-#content {
+#wrapper {
+    display: flex;
     width: 100%;
 }
 
-.turn {
+#content-left {
+    flex: 0 0 auto;
+}
+
+#content-right {
+    flex: 1 0 auto;
+}
+
+#content-right:focus {
+    outline: none;
+}
+
+.line-data, .line-content {
     display: flex;
     align-items: flex-start;
     width: 100%;
@@ -27,7 +40,8 @@ p {
 }
 
 .speaker-name {
-    flex: 0 0 var(--name-width);
+    flex: 0 0 auto;
+    width: var(--name-width);
 }
 
 .utterance {
