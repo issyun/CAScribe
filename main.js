@@ -60,11 +60,11 @@ wrapper.addEventListener('keydown', handleKeyDown);
 fetchJson();
 
 function handleClick(e) {
-  const selObj = window.getSelection();
-  const range = selObj.getRangeAt(0);
-  console.log(selObj);
-  console.log(range);
-  console.log(recurFindParent(selObj.anchorNode))
+  // const selObj = window.getSelection();
+  // const range = selObj.getRangeAt(0);
+  // console.log(selObj);
+  // console.log(range);
+  // console.log(recurFindParent(selObj.anchorNode));
   return;
 }
 
@@ -80,3 +80,30 @@ function recurFindParent(node) {
     return recurFindParent(parent)
   }
 }
+
+function underline(selection) {
+  const range = selection.getRangeAt(0);
+  console.log(range);
+  if (range.commonAncestorContainer.nodeType == 3) { // nodeType 3: text
+    const ancestorLength = range.commonAncestorContainer.length
+    if (range.commonAncestorContainer.parentNode.nodeName == 'SPAN') {
+      let newNode = document.createElement('u');
+      range.surroundContents(newNode);
+    } else if (range.commonAncestorContainer.parentNode.nodeName == 'U') {
+      if (range.startOffset == 0 && range.endOffset == ancestorLength) {
+        // remove underline
+      }
+    }
+  }
+}
+
+document.getElementById('underline').addEventListener('click', () => {
+  const selection = window.getSelection();
+  underline(selection);
+});
+
+document.getElementById('check-selection').addEventListener('click', () => {
+  const selection = window.getSelection();
+  console.log(selection);
+  console.log(selection.getRangeAt(0));
+});
