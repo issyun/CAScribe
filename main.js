@@ -90,7 +90,7 @@ function underline(selection) {
 
     startElement.innerText = beforeText;
 
-    const newElement = document.createElement('u');
+    const newElement = document.createElement('span');
     newElement.innerText = newText;
     startElement.insertAdjacentElement('afterend', newElement);
     range.selectNodeContents(newElement);
