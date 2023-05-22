@@ -27,15 +27,10 @@ function renderContent(data) {
     utterance.setAttribute('data-block-id', uuidv4());
 
     turn.content.map((element) => {
-      let type;
-      if (element.type === 'symbol') {
-        type = 'span';
-      } else {
-        type = element.type;
-      }
-      const node = document.createElement(type);
-      node.innerText = element.text;
-      utterance.appendChild(node);
+      const span = document.createElement('span');
+      if (element.style) span.className = element.style;
+      span.innerText = element.text;
+      utterance.appendChild(span);
     });
 
     const lineData = document.createElement('div');
@@ -83,17 +78,26 @@ function recurFindParent(node) {
 
 function underline(selection) {
   const range = selection.getRangeAt(0);
-  console.log(range);
-  if (range.commonAncestorContainer.nodeType == 3) { // nodeType 3: text
-    const ancestorLength = range.commonAncestorContainer.length
-    if (range.commonAncestorContainer.parentNode.nodeName == 'SPAN') {
-      let newNode = document.createElement('u');
-      range.surroundContents(newNode);
-    } else if (range.commonAncestorContainer.parentNode.nodeName == 'U') {
-      if (range.startOffset == 0 && range.endOffset == ancestorLength) {
-        // remove underline
-      }
-    }
+  const startElement = range.startContainer.parentElement;
+  const endElement = range.endContainer.parentElement;
+  const ancestorElement = range.commonAncestorContainer.parentElement;
+
+  // CASE 1: Selection is in a single SPAN tag
+  if (ancestorElement.nodeName == 'SPAN') {
+    const beforeText = startElement.innerText.slice(0, range.startOffset);
+    const newText = range.toString();
+    const afterText = startElement.innerText.slice(range.endOffset);
+
+    startElement.innerText = beforeText;
+
+    const newElement = document.createElement('u');
+    newElement.innerText = newText;
+    startElement.insertAdjacentElement('afterend', newElement);
+    range.selectNodeContents(newElement);
+
+    const afterElement = document.createElement('span');
+    afterElement.innerText = afterText;
+    newElement.insertAdjacentElement('afterend', afterElement);
   }
 }
 

@@ -47,3 +47,17 @@ p {
 .utterance {
     flex: 1 1 0;
 }
+
+/* ---------------- SPAN STYLES ---------------- */
+
+span.bold {
+    font-weight: bold;
+}
+
+span.italic {
+    font-style: italic;
+}
+
+span.underlined {
+    text-decoration: underline;
+}
