@@ -82,23 +82,79 @@ function underline(selection) {
   const endElement = range.endContainer.parentElement;
   const ancestorElement = range.commonAncestorContainer.parentElement;
 
-  // CASE 1: Selection is in a single SPAN tag
-  if (ancestorElement.nodeName == 'SPAN') {
-    const beforeText = startElement.innerText.slice(0, range.startOffset);
-    const newText = range.toString();
-    const afterText = startElement.innerText.slice(range.endOffset);
+  if (startElement.className.includes('underlined')) {
+    // A. REMOVE UNDERLINE if selection starts in UNDERLINED
 
-    startElement.innerText = beforeText;
+  } else {
+    // B. ADD UNDERLINE if selection doesn't start in UNDERLINED
+    if (ancestorElement.nodeName == 'SPAN') {
+      // B-1. selection is in a single SPAN tag
+      const beforeText = startElement.innerText.slice(0, range.startOffset);
+      const newText = range.toString();
+      const afterText = startElement.innerText.slice(range.endOffset);
 
-    const newElement = document.createElement('span');
-    newElement.innerText = newText;
-    startElement.insertAdjacentElement('afterend', newElement);
-    range.selectNodeContents(newElement);
+      const newElement = document.createElement('span');
+      newElement.className = startElement.className + ' underlined';
+      newElement.innerText = newText;
+  
+      if (beforeText) {
+        startElement.innerText = beforeText;
+        startElement.insertAdjacentElement('afterend', newElement);
+      } else {
+        startElement.replaceWith(newElement);
+      }
+  
+      if (afterText) {
+        const afterElement = document.createElement('span');
+        afterElement.className = startElement.className;
+        afterElement.innerText = afterText;
+        newElement.insertAdjacentElement('afterend', afterElement);
+      }
 
-    const afterElement = document.createElement('span');
-    afterElement.innerText = afterText;
-    newElement.insertAdjacentElement('afterend', afterElement);
+      range.selectNodeContents(newElement);
+  
+    } else if (ancestorElement.nodeName == 'DIV') {
+      // B-2. selection spans across MULTIPLE SPANs
+      const beforeText = startElement.innerText.slice(0, range.startOffset);
+      const afterText = endElement.innerText.slice(range.endOffset);
+
+      const middleElements = [];
+      let walker = startElement.nextElementSibling;
+      while (walker != endElement) {
+        middleElements.push(walker);
+        walker = walker.nextElementSibling;
+      }
+
+      if (beforeText) {
+        const beforeElement = document.createElement('span');
+        beforeElement.className = startElement.className;
+        beforeElement.innerText = beforeText;
+        startElement.className += ' underlined';
+        startElement.insertAdjacentElement('beforeBegin', beforeElement);
+        startElement.innerText = startElement.innerText.slice(range.startOffset);
+      } else {
+        startElement.className += ' underlined';
+      }
+
+      middleElements.map((element) => {
+        element.className += ' underlined';
+      })
+
+      if (afterText) {
+        const afterElement = document.createElement('span');
+        afterElement.className = endElement.className;
+        afterElement.innerText = afterText;
+        endElement.className += ' underlined';
+        endElement.innerText = endElement.innerText.slice(0, range.endOffset);
+        endElement.insertAdjacentElement('afterEnd', afterElement);
+      } else {
+        endElement.className += ' underlined';
+      }
+
+      // TODO: handle already underlined SPANs
+    }
   }
+  
 }
 
 document.getElementById('underline').addEventListener('click', () => {
