@@ -49,8 +49,6 @@ function renderContent(data) {
 const contentFieldLeft = document.getElementById("content-left");
 const contentFieldRight = document.getElementById("content-right");
 const wrapper = document.getElementById("wrapper");
-wrapper.addEventListener("click", handleClick);
-wrapper.addEventListener("keydown", handleKeyDown);
 
 fetchJson();
 
