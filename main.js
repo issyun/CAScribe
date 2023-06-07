@@ -54,19 +54,6 @@ wrapper.addEventListener("keydown", handleKeyDown);
 
 fetchJson();
 
-function handleClick(e) {
-  // const selObj = window.getSelection();
-  // const range = selObj.getRangeAt(0);
-  // console.log(selObj);
-  // console.log(range);
-  // console.log(recurFindParent(selObj.anchorNode));
-  return;
-}
-
-function handleKeyDown(e) {
-  return;
-}
-
 function recurFindParent(node) {
   const parent = node.parentElement;
   if (parent.classList.contains("block")) {
@@ -76,13 +63,13 @@ function recurFindParent(node) {
   }
 }
 
-function underline(selection) {
+function handleStyle(selection, styleClass) {
   const range = selection.getRangeAt(0);
   const startElement = range.startContainer.parentElement;
   const endElement = range.endContainer.parentElement;
   const ancestorElement = range.commonAncestorContainer.parentElement;
 
-  const shouldRemove = startElement.classList.contains("underlined");
+  const shouldRemove = startElement.classList.contains(styleClass);
 
   if (ancestorElement.nodeName === "SPAN") {
     // A. selection is in a single SPAN tag
@@ -93,9 +80,9 @@ function underline(selection) {
     const newElement = document.createElement("span");
     newElement.className = startElement.className;
     if (shouldRemove) {
-      newElement.classList.remove("underlined");
+      newElement.classList.remove(styleClass);
     } else {
-      newElement.classList.add("underlined");
+      newElement.classList.add(styleClass);
     }
     newElement.textContent = newText;
 
@@ -154,14 +141,16 @@ function underline(selection) {
       beforeElement.className = startElement.className;
       beforeElement.textContent = beforeText;
       startElement.insertAdjacentElement("beforeBegin", beforeElement);
-      startElement.textContent = startElement.textContent.slice(range.startOffset);
+      startElement.textContent = startElement.textContent.slice(
+        range.startOffset
+      );
     }
 
     for (const element of middleElements) {
       if (shouldRemove) {
-        element.classList.remove("underlined");
+        element.classList.remove(styleClass);
       } else {
-        element.classList.add("underlined");
+        element.classList.add(styleClass);
       }
     }
 
@@ -174,11 +163,11 @@ function underline(selection) {
     }
 
     if (shouldRemove) {
-      startElement.classList.remove("underlined");
-      endElement.classList.remove("underlined");
+      startElement.classList.remove(styleClass);
+      endElement.classList.remove(styleClass);
     } else {
-      startElement.classList.add("underlined");
-      endElement.classList.add("underlined");
+      startElement.classList.add(styleClass);
+      endElement.classList.add(styleClass);
     }
 
     // Concatenate elements with identical classes
@@ -234,7 +223,7 @@ function underline(selection) {
 
 document.getElementById("underline").addEventListener("click", () => {
   const selection = window.getSelection();
-  underline(selection);
+  handleStyle(selection, "underlined");
 });
 
 document.getElementById("check-selection").addEventListener("click", () => {
