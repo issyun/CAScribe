@@ -12,16 +12,16 @@ function renderContent(data) {
   data.content.map((turn, idx) => {
     const lineNumber = document.createElement("p");
     lineNumber.className = "line-number";
-    lineNumber.innerText = idx + 1;
+    lineNumber.textContent = idx + 1;
 
     const speakerName = document.createElement("p");
     speakerName.className = "speaker-name block";
     speakerName.setAttribute("data-block-id", uuidv4());
     if (turn.name !== "none") {
-      speakerName.innerText = turn.name;
+      speakerName.textContent = turn.name;
     }
 
-    const utterance = document.createElement("div");
+    const utterance = document.createElement("p");
     utterance.className = "utterance block";
     utterance.contentEditable = true;
     utterance.setAttribute("data-block-id", uuidv4());
@@ -29,7 +29,7 @@ function renderContent(data) {
     turn.content.map((element) => {
       const span = document.createElement("span");
       if (element.style) span.className = element.style;
-      span.innerText = element.text;
+      span.textContent = element.text;
       utterance.appendChild(span);
     });
 
@@ -84,11 +84,11 @@ function underline(selection) {
 
   const shouldRemove = startElement.classList.contains("underlined");
 
-  if (ancestorElement.nodeName == "SPAN") {
+  if (ancestorElement.nodeName === "SPAN") {
     // A. selection is in a single SPAN tag
-    const beforeText = startElement.innerText.slice(0, range.startOffset);
+    const beforeText = startElement.textContent.slice(0, range.startOffset);
     const newText = range.toString();
-    const afterText = startElement.innerText.slice(range.endOffset);
+    const afterText = startElement.textContent.slice(range.endOffset);
 
     const newElement = document.createElement("span");
     newElement.className = startElement.className;
@@ -97,10 +97,10 @@ function underline(selection) {
     } else {
       newElement.classList.add("underlined");
     }
-    newElement.innerText = newText;
+    newElement.textContent = newText;
 
     if (beforeText) {
-      startElement.innerText = beforeText;
+      startElement.textContent = beforeText;
       startElement.insertAdjacentElement("afterend", newElement);
     } else {
       startElement.replaceWith(newElement);
@@ -109,32 +109,38 @@ function underline(selection) {
     if (afterText) {
       const afterElement = document.createElement("span");
       afterElement.className = startElement.className;
-      afterElement.innerText = afterText;
+      afterElement.textContent = afterText;
       newElement.insertAdjacentElement("afterend", afterElement);
     }
 
-    range.selectNodeContents(newElement.firstChild);
-
+    // Concatenate surrounding elements with identical classes
     const prevElement = newElement.previousElementSibling;
-    const prevLength = prevElement ? prevElement.innerText.length : 0;
     const nextElement = newElement.nextElementSibling;
-    const newLength = newElement.innerText.length;
+    let newStartOffset = 0;
+    let newEndOffset = newElement.textContent.length;
 
-    if (prevElement.className == newElement.className) {
-      newElement.innerText = prevElement.innerText + newElement.innerText;
+    if (prevElement && prevElement.className === newElement.className) {
+      newElement.textContent = prevElement.textContent + newElement.textContent;
       prevElement.remove();
-      range.setStart(newElement.firstChild, prevLength);
+      newStartOffset = prevElement.textContent.length;
+      newEndOffset += newStartOffset;
     }
-    if (nextElement.className == newElement.className) {
-      newElement.innerText = newElement.innerText + nextElement.innerText;
+    if (nextElement && nextElement.className === newElement.className) {
+      newElement.textContent = newElement.textContent + nextElement.textContent;
       nextElement.remove();
-      range.setEnd(newElement.firstChild, prevLength + newLength);
     }
 
-  } else if (ancestorElement.nodeName == "DIV") {
+    // Update range for selection
+    const newRange = document.createRange();
+    newRange.setStart(newElement.firstChild, newStartOffset);
+    newRange.setEnd(newElement.firstChild, newEndOffset);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+
+  } else if (ancestorElement.nodeName === "DIV") {
     // B. selection spans across MULTIPLE SPANs
-    const beforeText = startElement.innerText.slice(0, range.startOffset);
-    const afterText = endElement.innerText.slice(range.endOffset);
+    const beforeText = startElement.textContent.slice(0, range.startOffset);
+    const afterText = endElement.textContent.slice(range.endOffset);
 
     const middleElements = [];
     let walker = startElement.nextElementSibling;
@@ -146,25 +152,25 @@ function underline(selection) {
     if (beforeText) {
       const beforeElement = document.createElement("span");
       beforeElement.className = startElement.className;
-      beforeElement.innerText = beforeText;
+      beforeElement.textContent = beforeText;
       startElement.insertAdjacentElement("beforeBegin", beforeElement);
-      startElement.innerText = startElement.innerText.slice(range.startOffset);
+      startElement.textContent = startElement.textContent.slice(range.startOffset);
     }
 
-    middleElements.map((element) => {
+    for (const element of middleElements) {
       if (shouldRemove) {
         element.classList.remove("underlined");
       } else {
         element.classList.add("underlined");
       }
-    });
+    }
 
     if (afterText) {
       const afterElement = document.createElement("span");
       afterElement.className = endElement.className;
-      afterElement.innerText = afterText;
+      afterElement.textContent = afterText;
       endElement.insertAdjacentElement("afterEnd", afterElement);
-      endElement.innerText = endElement.innerText.slice(0, range.endOffset);
+      endElement.textContent = endElement.textContent.slice(0, range.endOffset);
     }
 
     if (shouldRemove) {
@@ -175,19 +181,54 @@ function underline(selection) {
       endElement.classList.add("underlined");
     }
 
-    range.setStart(startElement.firstChild, 0);
-    range.setEnd(endElement.firstChild, endElement.innerText.length);
-
+    // Concatenate elements with identical classes
     const prevElement = startElement.previousElementSibling;
     const nextElement = endElement.nextElementSibling;
-    if (prevElement.classList == startElement.classList) {
-      startElement.innerText = prevElement.innerText + startElement.innerText;
-      prevElement.remove();
+    let newStartOffset = 0;
+    let newEndOffsetFromEnd = 0;
+    let startRefIndex = 0;
+    let endRefIndexFromEnd = 0;
+
+    const concatRefs = [];
+    const newRefs = []; // for selection range
+    if (prevElement) {
+      concatRefs.push(prevElement);
+      startRefIndex = 1;
     }
-    if (nextElement.classList == endElement.classList) {
-      endElement.innerText = endElement.innerText + nextElement.innerText;
-      nextElement.remove();
+    concatRefs.push(startElement, ...middleElements, endElement);
+    if (nextElement) {
+      concatRefs.push(nextElement);
+      endRefIndexFromEnd = 1;
     }
+
+    let lastElement = null;
+    for (const element of concatRefs) {
+      console.log(element);
+      if (lastElement && lastElement.className == element.className) {
+        if (element == startElement) {
+          newStartOffset = lastElement.textContent.length;
+          startRefIndex = 0;
+        }
+        if (element == nextElement) {
+          newEndOffsetFromEnd = element.textContent.length;
+          endRefIndexFromEnd = 0;
+        }
+        element.textContent = lastElement.textContent + element.textContent;
+        lastElement.remove();
+        newRefs.pop();
+      }
+      lastElement = element;
+      newRefs.push(element);
+    }
+    const endRefIndex = newRefs.length - 1 - endRefIndexFromEnd;
+    const newEndOffset = newRefs[endRefIndex].textContent.length - newEndOffsetFromEnd;
+
+    // Update range for selection
+    const newRange = document.createRange();
+    newRange.setStart(newRefs[startRefIndex].firstChild, newStartOffset);
+    newRange.setEnd(newRefs[endRefIndex].firstChild, newEndOffset);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
   }
 }
 
