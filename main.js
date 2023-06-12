@@ -54,7 +54,9 @@ fetchJson();
 
 function recurFindParent(node) {
   const parent = node.parentElement;
-  if (parent.classList.contains("block")) {
+  if (!parent) {
+    return null;
+  } else if (parent.classList.contains("block")) {
     return parent;
   } else {
     return recurFindParent(parent);
