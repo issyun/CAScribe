@@ -130,10 +130,21 @@ function handleStyle(selection, styleClass) {
     const afterText = endElement.textContent.slice(range.endOffset);
 
     const middleElements = [];
-    let walker = startElement.nextElementSibling;
+
+    let walker;
+    if (startElement.nextElementSibling) {
+      walker = startElement.nextElementSibling;
+    } else {
+      walker = startElement.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+    }
+
     while (walker != endElement) {
       middleElements.push(walker);
-      walker = walker.nextElementSibling;
+      if (walker.nextElementSibling) {
+        walker = walker.nextElementSibling;
+      } else {
+        walker = walker.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+      }
     }
 
     if (beforeText) {
@@ -192,19 +203,20 @@ function handleStyle(selection, styleClass) {
 
     let lastElement = null;
     for (const element of concatRefs) {
-      console.log(element);
       if (lastElement && lastElement.className == element.className) {
-        if (element == startElement) {
-          newStartOffset = lastElement.textContent.length;
-          startRefIndex = 0;
+        if (lastElement.parentElement == element.parentElement) {
+          if (element == startElement) {
+            newStartOffset = lastElement.textContent.length;
+            startRefIndex = 0;
+          }
+          if (element == nextElement) {
+            newEndOffsetFromEnd = element.textContent.length;
+            endRefIndexFromEnd = 0;
+          }
+          element.textContent = lastElement.textContent + element.textContent;
+          lastElement.remove();
+          newRefs.pop();
         }
-        if (element == nextElement) {
-          newEndOffsetFromEnd = element.textContent.length;
-          endRefIndexFromEnd = 0;
-        }
-        element.textContent = lastElement.textContent + element.textContent;
-        lastElement.remove();
-        newRefs.pop();
       }
       lastElement = element;
       newRefs.push(element);
