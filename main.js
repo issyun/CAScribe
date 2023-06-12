@@ -135,7 +135,9 @@ function handleStyle(selection, styleClass) {
     if (startElement.nextElementSibling) {
       walker = startElement.nextElementSibling;
     } else {
-      walker = startElement.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+      walker =
+        startElement.parentElement.parentElement.nextElementSibling
+          .firstElementChild.firstElementChild;
     }
 
     while (walker != endElement) {
@@ -143,7 +145,9 @@ function handleStyle(selection, styleClass) {
       if (walker.nextElementSibling) {
         walker = walker.nextElementSibling;
       } else {
-        walker = walker.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+        walker =
+          walker.parentElement.parentElement.nextElementSibling
+            .firstElementChild.firstElementChild;
       }
     }
 
@@ -222,7 +226,8 @@ function handleStyle(selection, styleClass) {
       newRefs.push(element);
     }
     const endRefIndex = newRefs.length - 1 - endRefIndexFromEnd;
-    const newEndOffset = newRefs[endRefIndex].textContent.length - newEndOffsetFromEnd;
+    const newEndOffset =
+      newRefs[endRefIndex].textContent.length - newEndOffsetFromEnd;
 
     // Update range for selection
     const newRange = document.createRange();
@@ -231,6 +236,11 @@ function handleStyle(selection, styleClass) {
     selection.removeAllRanges();
     selection.addRange(newRange);
   }
+}
+
+function handleEnter(e) {
+  selection = document.getSelection();
+  range = selection.getRangeAt(0);
 }
 
 document.getElementById("underline").addEventListener("click", () => {
@@ -242,4 +252,16 @@ document.getElementById("check-selection").addEventListener("click", () => {
   const selection = window.getSelection();
   console.log(selection);
   console.log(selection.getRangeAt(0));
+});
+
+wrapper.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case 'Enter':
+      e.stopPropagation();
+      e.preventDefault();
+      handleEnter(e);
+      break;
+    default:
+      return;
+  }
 });
