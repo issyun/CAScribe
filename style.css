@@ -1,5 +1,5 @@
 :root {
-    --name-width: 10rem;
+    --name-width: 16rem;
 }
 
 html {
@@ -9,11 +9,64 @@ html {
 
 p {
     margin: 0;
+    font-size: 1.6rem;
 }
 
-#wrapper {
+body {
+    background-color: #f3f3f3;
+}
+
+.page-wrapper {
+    width: 110rem;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 1.6rem;
+    border-radius: 0.5rem;  
+}
+
+#content-wrapper {
     display: flex;
     width: 100%;
+}
+
+.toolbar {
+    display: flex;
+    width: 100%;
+    background-color: #fafafa;
+    box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.12);
+    padding: 0.6rem;
+    margin-bottom: 2rem;
+}
+
+button {
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #333;
+    padding: 0.4rem;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    margin-right: 0.6rem;
+}
+
+.button-square {
+    width: 2.5rem;
+    font-family: 'Times New Roman', Times, serif
+}
+
+#style-bold {
+    font-weight: bold;
+}
+
+#style-italic {
+    font-style: italic;
+}
+
+#style-underline {
+    text-decoration: underline;
+}
+
+#check-selection {
+    margin-left: auto;
 }
 
 #content-left {

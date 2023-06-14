@@ -48,7 +48,7 @@ function renderContent(data) {
 
 const contentFieldLeft = document.getElementById("content-left");
 const contentFieldRight = document.getElementById("content-right");
-const wrapper = document.getElementById("wrapper");
+const contentWrapper = document.getElementById("content-wrapper");
 
 fetchJson();
 
@@ -243,7 +243,17 @@ function handleEnter(e) {
   range = selection.getRangeAt(0);
 }
 
-document.getElementById("underline").addEventListener("click", () => {
+document.getElementById("style-bold").addEventListener("click", () => {
+  const selection = window.getSelection();
+  handleStyle(selection, "bold");
+});
+
+document.getElementById("style-italic").addEventListener("click", () => {
+  const selection = window.getSelection();
+  handleStyle(selection, "italic");
+});
+
+document.getElementById("style-underline").addEventListener("click", () => {
   const selection = window.getSelection();
   handleStyle(selection, "underlined");
 });
@@ -254,7 +264,7 @@ document.getElementById("check-selection").addEventListener("click", () => {
   console.log(selection.getRangeAt(0));
 });
 
-wrapper.addEventListener("keydown", (e) => {
+contentWrapper.addEventListener("keydown", (e) => {
   switch (e.key) {
     case 'Enter':
       e.stopPropagation();
