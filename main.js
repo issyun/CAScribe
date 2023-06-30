@@ -32,21 +32,27 @@ function saveDocument(contentField) {
     let data = {
         "content": []
     }
-    for (const paragraph in contentField) {
+    for (const paragraph of contentField.children) {
         const p = {
             "type": "paragraph",
             "content": []
         }
-        for (const span in paragraph) {
-            const span = {
-                "style": [...span.classList],
+        for (const span of paragraph.children) {
+            const s = {
+                "style": [Array.from(span.classList)],
                 "text": span.textContent
             }
-            p.content.push(span);
+            p.content.push(s);
         }
         data.content.push(p);
     }
     return data;
+}
+
+async function init() {
+    let documentData = await fetchJson("./sample_document.json");
+    loadDocument(documentData, contentField);
+    console.log(saveDocument(contentField));
 }
 
 function recurFindParent(node) {
@@ -328,7 +334,4 @@ contentField.addEventListener("keydown", (e) => {
     }
 });
 
-let documentData = fetchJson("./sample_document.json");
-documentData.then((val) => {
-    loadDocument(val, contentField);
-});
+init();
