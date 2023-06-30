@@ -1,93 +1,75 @@
 {
-  "title": "text document",
-  "date": "22-22-22",
-  "format": "jeffersonian",
-  "content": [
-    {
-      "type": "turn",
-      "name": "A",
-      "content": [
+    "title": "text document",
+    "date": "22-22-22",
+    "last-saved": "23-01-01-12-00-00",
+    "content": [
         {
-          "style": "",
-          "text": "Now I shall talk in many different styles"
+            "type": "paragraph",
+            "content": [
+                {
+                    "style": [],
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui nulla, semper sit amet tortor vitae, pretium rhoncus sem. Nunc posuere neque interdum, porttitor risus at, ornare ipsum. Duis euismod cursus nisl id pharetra. "
+                },
+                {
+                    "style": ["underlined"],
+                    "text": "Vivamus luctus eu ligula ac pretium. Sed pulvinar urna lacus, gravida hendrerit massa molestie a. "
+                },
+                {
+                    "style": [],
+                    "text": "Fusce viverra nulla nec justo cursus, sed accumsan arcu rutrum. Proin urna eros, malesuada in ultrices eget, condimentum quis augue. Etiam id fringilla nisl. Integer egestas urna sem. "
+                },
+                {
+                    "style": ["bold"],
+                    "text": "In pulvinar erat at magna elementum posuere eu in orci. "
+                },
+                {
+                    "style": [],
+                    "text": "Vivamus elit tortor, ultrices non lorem sed, pellentesque eleifend magna. Ut convallis rhoncus rhoncus. Integer varius augue non dui dapibus fermentum. Morbi molestie maximus nisl non pharetra."
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "style": [],
+                    "text": "Nulla in lectus sit amet nibh imperdiet porta in quis quam. Curabitur nec nunc a ex viverra pellentesque et nec enim. Vivamus tristique turpis vitae lorem fermentum commodo. "
+                },
+                {
+                    "style": ["italic"],
+                    "text": "Sed a est vitae"
+                },
+                {
+                    "style": [],
+                    "text": " dui imperdiet viverra vitae id lorem. Etiam nec viverra elit. Vivamus sapien nisl, fermentum eu libero nec, auctor feugiat ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras id semper lectus. Nunc consectetur in eros vel ornare."
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "style": [],
+                    "text": "Etiam ut suscipit mauris. Phasellus vel vehicula odio. Nullam elementum ligula at ipsum condimentum, a accumsan erat posuere. Sed pharetra ipsum ut ante rutrum, id laoreet elit tempor. Donec mattis ultrices ipsum ac aliquam. Vestibulum vel tempus nunc. Integer at purus et odio condimentum ultrices. Proin nec luctus sapien, ac ultricies orci."
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "style": [],
+                    "text": "Aliquam rhoncus mollis nibh, quis interdum nunc dictum eu. Phasellus sollicitudin in mauris eu feugiat. Fusce elementum, nibh id tincidunt dapibus, purus dolor vulputate enim, ultricies aliquet orci magna at mauris. Aliquam non metus ullamcorper, bibendum orci eget, consectetur mauris. Sed pulvinar massa sit amet elit interdum tincidunt et a magna. Cras eu nunc diam. "
+                },
+                {
+                    "style": ["bold", "underlined"],
+                    "text": "Integer varius neque et facilisis lacinia."
+                },
+                {
+                    "style": [],
+                    "text": " Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vel metus pellentesque, facilisis nunc a, condimentum arcu. Vestibulum aliquet urna eu justo pretium, eleifend congue lacus suscipit. Fusce vel nisi mauris. Proin placerat molestie odio sed ultrices. Duis fermentum eu massa vel varius. Etiam aliquet lacus sit amet sollicitudin mollis. Etiam porta justo id felis lobortis, nec ultrices nisi fermentum."
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "turn",
-      "name": "BRACADABRA",
-      "content": [
-        {
-          "style": "",
-          "text": "okay"
-        },
-        {
-          "style": "symbol",
-          "text": ":"
-        }
-      ]
-    },
-    {
-      "type": "turn",
-      "name": "A",
-      "content": [
-        {
-          "style": "",
-          "text": "I can talk "
-        },
-        {
-          "style": "bold",
-          "text": "bold, "
-        },
-        {
-          "style": "",
-          "text": "and in "
-        },
-        {
-          "style": "italic",
-          "text": "italics, "
-        },
-        {
-          "style": "",
-          "text": "and I can even "
-        },
-        {
-          "style": "underlined",
-          "text": "underline"
-        },
-        {
-          "style": "",
-          "text": " my text."
-        }
-      ]
-    },
-    {
-      "type": "turn",
-      "name": "none",
-      "content": [
-        {
-          "style": "symbol",
-          "text": "("
-        },
-        {
-          "style": "",
-          "text": "2.0"
-        },
-        {
-          "style": "symbol",
-          "text": ")"
-        }
-      ]
-    },
-    {
-      "type": "turn",
-      "name": "BRACADABRA",
-      "content": [
-        {
-          "style": "",
-          "text": "wow"
-        }
-      ]
-    }
-  ]
+    ]
 }

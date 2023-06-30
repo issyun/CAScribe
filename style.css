@@ -31,7 +31,6 @@ body {
 
 .toolbar {
     display: flex;
-    width: 100%;
     background-color: #fafafa;
     box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.12);
     padding: 0.6rem;
@@ -69,15 +68,7 @@ button {
     margin-left: auto;
 }
 
-#content-left {
-    flex: 0 0 auto;
-}
-
-#content-right {
-    flex: 1 0 auto;
-}
-
-#content-right:focus {
+#content:focus {
     outline: none;
 }
 

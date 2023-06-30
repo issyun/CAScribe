@@ -1,59 +1,39 @@
 import { v4 as uuidv4 } from "uuid";
 
-let documentData;
-async function fetchJson() {
-  const res = await fetch("./sample_document.json");
+async function fetchJson(url) {
+  const res = await fetch(url);
   const json = await res.json();
-  documentData = json;
-  renderContent(json);
+  return json;
 }
 
-function renderContent(data) {
-  data.content.map((turn, idx) => {
-    const lineNumber = document.createElement("p");
-    lineNumber.className = "line-number";
-    lineNumber.textContent = idx + 1;
+function renderContent(data, container) {
+  for (const paragraph of data.content) {
+    const p = document.createElement("p");
+    p.classList.add("block");
+    p.contentEditable = true;
+    p.setAttribute("data-block-id", uuidv4());
 
-    const speakerName = document.createElement("p");
-    speakerName.className = "speaker-name block";
-    speakerName.setAttribute("data-block-id", uuidv4());
-    if (turn.name !== "none") {
-      speakerName.textContent = turn.name;
+    for (const element of paragraph.content) {
+      const span = document.createElement("span");
+      if (element.style) {
+        for (const c of element.style) {
+          span.classList.add(c);
+        }
+      }
+      span.textContent = element.text;
+      p.appendChild(span);
     }
 
-    const utterance = document.createElement("p");
-    utterance.className = "utterance block";
-    utterance.contentEditable = true;
-    utterance.setAttribute("data-block-id", uuidv4());
-
-    turn.content.map((element) => {
-      const span = document.createElement("span");
-      if (element.style) span.className = element.style;
-      span.textContent = element.text;
-      utterance.appendChild(span);
-    });
-
-    const lineData = document.createElement("div");
-    lineData.className = "line-data";
-    lineData.appendChild(lineNumber);
-    lineData.appendChild(speakerName);
-    contentFieldLeft.appendChild(lineData);
-
-    const lineContent = document.createElement("div");
-    lineContent.className = "line-content";
-    lineContent.appendChild(utterance);
-    contentFieldRight.appendChild(lineContent);
-  });
+    const div = document.createElement("div");
+    div.classList.add("line-content");
+    div.appendChild(p);
+    container.appendChild(div);
+  }
 }
-
-const contentFieldLeft = document.getElementById("content-left");
-const contentFieldRight = document.getElementById("content-right");
-const contentWrapper = document.getElementById("content-wrapper");
-
-fetchJson();
 
 function recurFindParent(node) {
   const parent = node.parentElement;
+  console.log(parent);
   if (!parent) {
     return null;
   } else if (parent.classList.contains("block")) {
@@ -239,9 +219,12 @@ function handleStyle(selection, styleClass) {
 }
 
 function handleEnter(e) {
-  selection = document.getSelection();
-  range = selection.getRangeAt(0);
+  const selection = document.getSelection();
+  const range = selection.getRangeAt(0);
 }
+
+const contentField = document.getElementById("content");
+const contentWrapper = document.getElementById("content-wrapper");
 
 document.getElementById("style-bold").addEventListener("click", () => {
   const selection = window.getSelection();
@@ -274,4 +257,9 @@ contentWrapper.addEventListener("keydown", (e) => {
     default:
       return;
   }
+});
+
+let documentData = fetchJson("./sample_document.json");
+documentData.then((val) => {
+  renderContent(val, contentField);
 });
