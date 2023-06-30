@@ -39,7 +39,7 @@ function saveDocument(contentField) {
         }
         for (const span of paragraph.children) {
             const s = {
-                "style": [Array.from(span.classList)],
+                "style": Array.from(span.classList),
                 "text": span.textContent
             }
             p.content.push(s);
@@ -344,6 +344,30 @@ document.getElementById("check-selection").addEventListener("click", () => {
     console.log(selection);
     console.log(selection.getRangeAt(0));
 });
+
+document.getElementById("load-json").addEventListener("click", async () => {
+    let file = document.querySelector("#file-input").files[0];
+    let reader = new FileReader();
+    let text = "";
+    reader.addEventListener('load', (e) => {
+        text = e.target.result;
+        contentField.innerHTML = "";
+        const obj = JSON.parse(text);
+        console.log(obj);
+        loadDocument(obj, contentField);
+    });
+    reader.readAsText(file);
+    
+});
+
+document.getElementById("download-json").addEventListener("click", () => {
+    const data = saveDocument(contentField);
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+    const button = document.getElementById('download-json');
+    button.setAttribute("href",     dataStr     );
+    button.setAttribute("download", "document.json");
+    // button.click();
+})
 
 contentField.addEventListener("keydown", (e) => {
     switch (e.key) {
