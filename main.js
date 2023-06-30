@@ -52,7 +52,6 @@ function saveDocument(contentField) {
 async function init() {
     let documentData = await fetchJson("./sample_document.json");
     loadDocument(documentData, contentField);
-    console.log(saveDocument(contentField));
 }
 
 function recurFindParent(node) {
@@ -251,16 +250,33 @@ function handleEnter(e) {
     const selection = document.getSelection();
     const range = selection.getRangeAt(0);
     const parent = recurFindParent(range.startContainer);
-    console.log(parent);
+
+    // Check if empty paragraph
+    if (range.startContainer.tagName && range.startContainer.tagName == "P") {
+        const p = document.createElement("p");
+        p.classList.add("block");
+        p.contentEditable = true;
+        p.setAttribute("data-block-id", uuidv4());
+
+        const span = document.createElement("span");
+        const t = document.createTextNode("\u200D");
+        span.appendChild(t);
+        p.appendChild(span);
+
+        range.startContainer.insertAdjacentElement("afterend", p);
+        range.setStartBefore(p.firstElementChild);
+        range.setEndBefore(p.firstElementChild);
+        return;
+    }
     if (parent.classList.contains("block")) {
         if (range.collapsed) {
             const startElement = range.startContainer.parentElement;
             const beforeText = startElement.textContent.slice(
                 0,
                 range.startOffset
-            );
+                );
             const afterText = startElement.textContent.slice(range.endOffset);
-
+                
             const afterElements = [];
             if (startElement.nextElementSibling) {
                 let walker = startElement.nextElementSibling;
@@ -291,10 +307,17 @@ function handleEnter(e) {
             for (const span of afterElements) {
                 p.appendChild(span);
             }
+            if (afterElements.length < 1) {
+                const span = document.createElement("span");
+                span.className = startElement.className;
+                const t = document.createTextNode("\u200D");
+                span.appendChild(t);
+                p.appendChild(span);
+            }
 
             parent.insertAdjacentElement("afterend", p);
-            range.setStartBefore(p.firstElementChild.firstChild);
-            range.setEndBefore(p.firstElementChild.firstChild);
+            range.setStartBefore(p.firstElementChild);
+            range.setEndBefore(p.firstElementChild);
         }
     }
 }
