@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width minimum-scale=1.0">
     <script type="importmap">
       {
         "imports": {
@@ -12,15 +13,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="page-wrapper">
-      <div class="toolbar">
-        <button id="style-bold" class="button-square">B</button>
-        <button id="style-italic" class="button-square">I</button>
-        <button id="style-underline" class="button-square">U</button>
-        <button id="check-selection">check selection</button>
-      </div>
-      <div id="content-wrapper" class="content-wrapper">
+    <div class="app">
+      <div class="page-wrapper">
+        <div class="toolbar">
+          <button id="style-bold" class="button-square">B</button>
+          <button id="style-italic" class="button-square">I</button>
+          <button id="style-underline" class="button-square">U</button>
+          <button id="check-selection">check selection</button>
+        </div>
         <div id="content" contenteditable="true" spellcheck="false"></div>
+        </div>
       </div>
     </div>
   </body>

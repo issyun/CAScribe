@@ -8,7 +8,7 @@ html {
 }
 
 p {
-    margin: 0;
+    margin: 0 0 1rem 0;
     font-size: 1.6rem;
 }
 
@@ -16,9 +16,16 @@ body {
     background-color: #f3f3f3;
 }
 
+.app {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
 .page-wrapper {
-    width: 110rem;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 110rem;
     background-color: #fff;
     padding: 1.6rem;
     border-radius: 0.5rem;  
@@ -30,6 +37,8 @@ body {
 }
 
 .toolbar {
+    box-sizing: border-box;
+    width: 100%;
     display: flex;
     background-color: #fafafa;
     box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.12);
@@ -70,13 +79,6 @@ button {
 
 #content:focus {
     outline: none;
-}
-
-.line-data, .line-content {
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 1rem;
 }
 
 .line-number {
